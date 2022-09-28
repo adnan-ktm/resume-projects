@@ -1,0 +1,26 @@
+default:
+  tags:  
+    - lab
+
+stages:
+ - smoke_test
+
+
+
+# Cache downloaded dependencies and plugins between builds.
+# To keep cache across branches add 'key: "$CI_JOB_NAME"'
+cache:
+  paths:
+    - .m2/repository
+    - target/
+
+Smoke-Test:
+  image: maven:3.8-jdk-11
+  stage: smoke_test
+  script:
+    - echo "This job is for slic smoke test"
+    - mvn clean install
+    - mvn verify -Dcucumber.options='--tags @smoke'
+
+
+
